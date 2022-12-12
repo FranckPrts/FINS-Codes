@@ -1,4 +1,16 @@
-#%%
+
+# @author: Franck Porteous <franck.porteous@protonmail.com>
+# Code writen for the FINS project 
+# Here, we 
+#   - Load the dual EEG files corresponding to the last step of
+#     preprocessing (rej3, or rej2)
+#   - Load the EEG file pairs 
+#       - Verifies epoch count (WE HAVE A PROBLEM HERE,
+#         working on realigne-eeg-streams.ipynb for a solution)
+#   TBC (codes' already there for further steps)
+
+
+#%% IMPORTS
 # FOOOF imports
 from copy import deepcopy
 
@@ -19,7 +31,7 @@ import seaborn as sns
 from utils.useful_func import *
 
 data_path    = "../FINS-data/"
-save_path    = "/Users/zoubou/Documents/Work/NYU/Brito-Lab/FINS-results/"
+save_path    = "../FINS-results/"
 
 #%%
 # %matplotlib qt 
@@ -109,6 +121,11 @@ for dyad in dyad_to_study:
         for fname in files_adu:
             if fname.endswith('rej2.set'):
                 to_process.append((dyad, tmp, fname))
+
+np.savetxt("files_to_process.csv", 
+           to_process,
+           delimiter =",", 
+           fmt ='% s')
 
 # %%
 ibc_metric = 'ccorr'
