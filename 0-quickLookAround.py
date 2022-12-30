@@ -35,7 +35,7 @@ save_path    = "../FINS-results/"
 
 #%%
 # %matplotlib qt 
-%matplotlib inline 
+# %matplotlib inline 
 
 #%%
 all_dir = os.listdir(data_path) 
