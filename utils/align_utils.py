@@ -54,51 +54,35 @@ def take_a_step_back (state_dict=dict, rm_idx=list, is_first_round=bool) :
         for key in state_dict.keys():
             existing_states.append(key)
         existing_states.sort()
+
+        # Sort the states that were removed so we make sure we start by the 
+        # lowest idx to reiterate shifting idx correctly
+        rm_idx.sort()
+
+        # For each index that was removed,
+        for rmed in rm_idx:
+            # Check all existing idx, and if the index
+            # already exist, update it such that ...
+            for existing in existing_states:
+                # ... only the indexes that would be shifted by introducing 
+                # a NaN sees their 'new' index substracted 1.
+                # We substract 1 because in the persepctive of the initial df,
+                # the index of a given state lost a rank because of removing a
+                # state that was anterior to it.
+                if existing > rmed:
+                    if state_dict[existing] == 'NaN':
+                        pass
+                    else:
+                        state_dict[existing] -= 1
+            state_dict[rmed] = 'NaN'
     else:
-        existing_states = []
-        for key in state_dict.keys():
-            existing_states.append(key)
-        existing_states.sort()
+        rm_idx.sort()
 
-        # Find what is the highest values of a state that exist,
-        # we'll need that to define the values of the states we're
-        # adding correctly (e.g. if we have [0(0), 1(NaN), 2(1)], 
-        # we're adding the state #3 with value '2': [0(0), 1(NaN), 2(1), 3(2)])
-        tmp = [state_dict[i] for i in state_dict.keys() if state_dict[i] != 'NaN']
-        tmp.sort()
-        highest_state_val = tmp[-1]
-        del tmp
+        for rmed in rm_idx:
+            d2 = {key+1 if key >= rmed else key: value for key, value in state_dict.items()}
+            d2[rmed] = 'NaN'
 
-        # Add placeholders in the state_dict for the new state
-        # added by introducing the removed states
-        for new_key in range(len(rm_idx)):
-            state_dict[existing_states[-1]+new_key+1] = highest_state_val+new_key+1
-
-        existing_states = []
-        for key in state_dict.keys():
-            existing_states.append(key)
-        existing_states.sort()
-
-    # Sort the states that were removed so we make sure we start by the 
-    # lowest idx to reiterate shifting idx correctly
-    rm_idx.sort()
-
-    # For each index that was removed,
-    for rmed in rm_idx:
-        # Check all existing idx, and if the index
-        # already exist, update it such that ...
-        for existing in existing_states:
-            # ... only the indexes that would be shifted by introducing 
-            # a NaN sees their 'new' index substracted 1.
-            # We substract 1 because in the persepctive of the initial df,
-            # the index of a given state lost a rank because of removing a
-            # state that was anterior to it.
-            if existing > rmed:
-                if state_dict[existing] == 'NaN':
-                    pass
-                else:
-                    state_dict[existing] -= 1
-        state_dict[rmed] = 'NaN'
+            state_dict = d2
 
     return state_dict
 
@@ -113,8 +97,8 @@ def revert_to_original_idx (last_state=list, removed_list=list, verbose=True):
         for i in state_dict.keys():
             print('\t',i, state_dict[i])
 
-    # revert "last_state" so we can beging by the last round 
-    last_state.reverse()
+    # revert "last_state" so we can beging by the last round
+    removed_list.reverse()
 
     # Initialize the boolean "first_round_bool" to be true so the 
     # function knows it has to take the special step it needs to 
