@@ -81,7 +81,6 @@ def take_a_step_back (state_dict=dict, rm_idx=list, is_first_round=bool) :
         for rmed in rm_idx:
             d2 = {key+1 if key >= rmed else key: value for key, value in state_dict.items()}
             d2[rmed] = 'NaN'
-
             state_dict = d2
 
     return state_dict
@@ -107,8 +106,10 @@ def revert_to_original_idx (last_state=list, removed_list=list, verbose=True):
     
     for rm_idx in removed_list:
 
+        state_dict_arg = state_dict if first_round_bool else updated_state_dict
+
         updated_state_dict = take_a_step_back(
-            state_dict=state_dict, 
+            state_dict=state_dict_arg, 
             rm_idx=rm_idx, 
             is_first_round=first_round_bool)
         
