@@ -3,8 +3,19 @@ import numpy as np
 import pandas as pd
 import tempfile
 
-def make_list_from_text (unformated_list:str):
-    return [i for i in unformated_list.split(' ')] 
+def make_list_from_text(unformated_list):
+    """
+    Return a flattened list of integers from a str formated as:
+    '1 3 24:27 234' --> [1, 3, 24, 25, 26, 27, 234].
+    """
+    tmp = []
+    for item in [i for i in unformated_list.split(' ')] :
+        if ':' in item:
+            start, end = item.split(':')
+            tmp += list(range(int(start), int(end)+1))
+        else:
+            tmp.append(int(item))
+    return tmp
 
 def remove_double(rej2:list, rej3:list):
     merged_list=rej3
@@ -29,7 +40,7 @@ def EpochsEEGLAB_to_mneEpochsFIF (path):
         instance of mne.Epochs.
     """
     # read the file and get a mne.io.eeglab.eeglab.EpochsEEGLAB instance
-    tmp = mne.io.read_epochs_eeglab(path)
+    tmp = mne.io.read_epochs_eeglab(path, verbose=False)
 
     with tempfile.TemporaryDirectory() as tmpdir:
         # save it in FIF
