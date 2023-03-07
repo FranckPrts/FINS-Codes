@@ -28,7 +28,7 @@ import numpy as np
 import pandas as pd
 import os
 import seaborn as sns
-from utils.useful_func import *
+from utils.align_utils import *
 
 data_path    = "../FINS-data/"
 save_path    = "../FINS-results/"
@@ -126,6 +126,16 @@ np.savetxt("files_to_process.csv",
            to_process,
            delimiter =",", 
            fmt ='% s')
+
+#%%
+
+
+
+# HERE WE NEED TO FIX THE MISALIGNEMENT CAUSED BY PROPROCESSING THE
+# EEG FILE SEPARETLY
+
+
+
 
 # %%
 ibc_metric = 'ccorr'
