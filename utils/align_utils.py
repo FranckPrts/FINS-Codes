@@ -3,6 +3,9 @@ import numpy as np
 import pandas as pd
 import tempfile
 
+def make_list_from_text (unformated_list:str):
+    return [i for i in unformated_list.split(' ')] 
+
 def remove_double(rej2:list, rej3:list):
     merged_list=rej3
     for i in rej2:
