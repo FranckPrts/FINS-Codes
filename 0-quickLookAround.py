@@ -64,8 +64,8 @@ for dyad in dyad_nb: # for all dyad folder in the main folder
             valid_chi_dynb_rej3.append(file.split('_')[1]) # store valid kid dyad
         elif f[0][-4:] == 'rej2':
             valid_chi_dynb_rej2.append(file.split('_')[1]) # store valid kid dyad
-        else: 
-            print('Dyad {} has no usable files (rej3 or rej2) for child'.format(dyad))
+        else:
+            pass
 # Now that we know the child has the file, we go to the adult
 for dyad in dyad_nb: # for all dyad folder in the main folder
     adu_files = os.listdir('{}{}_adult_FP'.format(data_path, dyad))
@@ -75,8 +75,8 @@ for dyad in dyad_nb: # for all dyad folder in the main folder
             valid_adu_dynb_rej3.append(file.split('_')[1]) # store valid adult dyad
         elif f[0][-4:] == 'rej2':
             valid_adu_dynb_rej2.append(file.split('_')[1]) # store valid kid dyad
-        else: 
-            print('Dyad {} has no usable files (rej3 or rej2) for adult'.format(dyad))
+        else:
+            pass
 
 #%%
 # Combine list of dyad with either rej3 or rej2 available
